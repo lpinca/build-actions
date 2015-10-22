@@ -4,6 +4,7 @@
   "description": "Calculates the differences between two customer objects and build the update actions",
   "main": "lib/",
   "scripts": {
+    "coverage": "babel-node node_modules/.bin/isparta cover _mocha",
     "test": "babel-node node_modules/.bin/_mocha",
     "build": "mkdir -p lib && babel -d lib src"
   },
@@ -18,6 +19,7 @@
   "devDependencies": {
     "babel": "^5.8.23",
     "chai": "^3.4.0",
+    "isparta": "^3.1.0",
     "lodash.clonedeep": "^3.0.2",
     "mocha": "^2.3.3",
     "pre-commit": "^1.1.2"
