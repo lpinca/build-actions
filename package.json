@@ -8,11 +8,17 @@
     "test": "babel-node node_modules/.bin/_mocha",
     "build": "mkdir -p lib && babel -d lib src"
   },
+  "homepage": "https://github.com/lpinca/build-actions",
+  "bugs": "https://github.com/lpinca/build-actions/issues",
   "author": "Luigi Pinca",
   "license": "MIT",
   "files": [
     "lib"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lpinca/build-actions.git"
+  },
   "dependencies": {
     "jsondiffpatch": "^0.1.37"
   },
