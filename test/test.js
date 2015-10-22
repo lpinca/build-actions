@@ -29,4 +29,15 @@ describe('buildActions', () => {
       lastName: 'bar'
     }]);
   });
+
+  it('builds the `changeEmail` action', () => {
+    const after = clone(customer);
+
+    after.email = 'foobar@domain.com';
+
+    expect(buildActions(customer, after)).to.deep.equal([{
+      action: 'changeEmail',
+      email: after.email
+    }]);
+  });
 });

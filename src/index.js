@@ -51,6 +51,8 @@ function buildActions(before, after) {
       } else if (change.length === 2) {
         action[key] = change[1];
       }
+    } else if (key === 'email') {
+      actions.push({ action: 'changeEmail', email: change[1] });
     }
   });
 
