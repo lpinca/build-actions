@@ -1,9 +1,10 @@
 {
   "name": "build-actions",
   "version": "1.0.0",
-  "description": "Calculates the differences between two customer objects and build the update actions",
+  "description": "Calculate the differences between two customer objects and build the update actions",
   "main": "lib/",
   "scripts": {
+    "test-travis": "babel-node node_modules/.bin/isparta cover _mocha --report lcovonly",
     "coverage": "babel-node node_modules/.bin/isparta cover _mocha",
     "test": "babel-node node_modules/.bin/_mocha",
     "build": "mkdir -p lib && babel -d lib src"
