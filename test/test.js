@@ -40,4 +40,49 @@ describe('buildActions', () => {
       email: after.email
     }]);
   });
+
+  it('builds the actions for the addresses', () => {
+    const before = clone(customer);
+    const after = clone(customer);
+
+    before.addresses.push({
+      id: '-FedBtG1',
+      country: 'IT'
+    }, {
+      id: 'c8iHxWpT',
+      country: 'DE'
+    }, {
+      id: 'FjAJrc2C',
+      country: 'NL'
+    });
+
+    after.addresses.push({
+      id: 'FjAJrc2C',
+      country: 'NL'
+    }, {
+      id: '-FedBtG1',
+      country: 'GB',
+      city: 'London'
+    }, {
+      country: 'FR'
+    });
+
+    expect(buildActions(before, after).sort((a, b) => {
+      return a.action.localeCompare(b.action);
+    })).to.deep.equal([{
+      action: 'addAddress',
+      address: { country: 'FR' }
+    }, {
+      action: 'changeAddress',
+      addressId: '-FedBtG1',
+      address: {
+        id: '-FedBtG1',
+        country: 'GB',
+        city: 'London'
+      }
+    }, {
+      action: 'removeAddress',
+      addressId: 'c8iHxWpT'
+    }]);
+  });
 });

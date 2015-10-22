@@ -1,6 +1,8 @@
 'use strict';
 
-import { diff } from 'jsondiffpatch';
+import jsondiffpatch from 'jsondiffpatch';
+
+const diffpatch = jsondiffpatch.create({ objectHash: (obj) => obj.id });
 
 /**
  * Calculates the differences between two customer objects and builds the update
@@ -12,7 +14,7 @@ import { diff } from 'jsondiffpatch';
  * @return {Array} Update actions
  */
 function buildActions(before, after) {
-  const changes = diff(before, after) || {};
+  const changes = diffpatch.diff(before, after) || {};
   const nameFields = [
     'middleName',
     'firstName',
@@ -53,6 +55,38 @@ function buildActions(before, after) {
       }
     } else if (key === 'email') {
       actions.push({ action: 'changeEmail', email: change[1] });
+    } else if (key === 'addresses') {
+      Object.keys(change).forEach((key) => {
+        //
+        // This property has no special meaning for us.
+        //
+        if (key === '_t') return;
+
+        const delta = change[key];
+
+        //
+        // The address has been moved or removed.
+        //
+        if (key.charAt(0) === '_') {
+          if (!delta[2]) {
+            actions.push({ action: 'removeAddress', addressId: delta[0].id });
+          }
+          return;
+        }
+
+        //
+        // The address has been changed or inserted.
+        //
+        if (Array.isArray(delta)) {
+          actions.push({ action: 'addAddress', address: delta[0] });
+        } else {
+          actions.push({
+            addressId: after.addresses[key].id,
+            address: after.addresses[key],
+            action: 'changeAddress'
+          });
+        }
+      });
     }
   });
 
