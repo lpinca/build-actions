@@ -3,6 +3,12 @@
 import jsondiffpatch from 'jsondiffpatch';
 
 const diffpatch = jsondiffpatch.create({ objectHash: (obj) => obj.id });
+const nameFields = [
+  'middleName',
+  'firstName',
+  'lastName',
+  'title'
+];
 
 /**
  * Calculates the differences between two customer objects and builds the update
@@ -15,43 +21,30 @@ const diffpatch = jsondiffpatch.create({ objectHash: (obj) => obj.id });
  */
 function buildActions(before, after) {
   const changes = diffpatch.diff(before, after) || {};
-  const nameFields = [
-    'middleName',
-    'firstName',
-    'lastName',
-    'title'
-  ];
   const actions = [];
+  let changeName;
 
   Object.keys(changes).forEach((key) => {
     const change = changes[key];
 
     if (~nameFields.indexOf(key)) {
       //
-      // Here we assume that the new object is validated, so if there is a
-      // difference in the `firstName` or `lastName` field, this difference
-      // must consist in a different non empty string.
+      // Create and append the action if we don't have one (the `firstName`
+      // and `lastName` fields can not be removed).
       //
-      let action = actions.find((action) => {
-        return action.action === 'changeName' ? true : false;
-      });
-
-      //
-      // Create and append the action if we can't find one.
-      //
-      if (!action) {
-        action = {
+      if (!changeName) {
+        changeName = {
           firstName: before.firstName,
           lastName: before.lastName,
           action: 'changeName'
         };
-        actions.push(action);
+        actions.push(changeName);
       }
 
       if (change.length === 1) {
-        action[key] = change[0];
+        changeName[key] = change[0];
       } else if (change.length === 2) {
-        action[key] = change[1];
+        changeName[key] = change[1];
       }
     } else if (key === 'email') {
       actions.push({ action: 'changeEmail', email: change[1] });
