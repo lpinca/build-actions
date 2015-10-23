@@ -7,7 +7,8 @@
     "test-travis": "babel-node node_modules/.bin/isparta cover _mocha --report lcovonly",
     "coverage": "babel-node node_modules/.bin/isparta cover _mocha",
     "test": "babel-node node_modules/.bin/_mocha",
-    "build": "mkdir -p lib && babel -d lib src"
+    "build": "mkdir -p lib && babel -d lib src",
+    "prepublish": "npm run build"
   },
   "homepage": "https://github.com/lpinca/build-actions",
   "bugs": "https://github.com/lpinca/build-actions/issues",
