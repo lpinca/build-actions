@@ -1,14 +1,9 @@
 'use strict';
 
+import { nameFields, commonFields } from './fields';
 import jsondiffpatch from 'jsondiffpatch';
 
 const diffpatch = jsondiffpatch.create({ objectHash: (obj) => obj.id });
-const nameFields = [
-  'middleName',
-  'firstName',
-  'lastName',
-  'title'
-];
 
 /**
  * Calculates the differences between two customer objects and builds the update
@@ -27,7 +22,7 @@ function buildActions(before, after) {
   Object.keys(changes).forEach((key) => {
     const change = changes[key];
 
-    if (~nameFields.indexOf(key)) {
+    if (nameFields.has(key)) {
       //
       // Create and append the action if we don't have one (the `firstName`
       // and `lastName` fields can not be removed).
@@ -41,12 +36,11 @@ function buildActions(before, after) {
         actions.push(changeName);
       }
 
-      if (change.length === 1) {
-        changeName[key] = change[0];
-      } else if (change.length === 2) {
-        changeName[key] = change[1];
-      }
+      if (change.length !== 3) changeName[key] = after[key];
     } else if (key === 'email') {
+      //
+      // This `email` field can not be removed.
+      //
       actions.push({ action: 'changeEmail', email: change[1] });
     } else if (key === 'addresses') {
       Object.keys(change).forEach((key) => {
@@ -80,6 +74,77 @@ function buildActions(before, after) {
           });
         }
       });
+    } else if (key === 'customerGroup') {
+      const action = { action: 'setCustomerGroup' };
+
+      if (!Array.isArray(change) || change.length === 1) {
+        action.customerGroup = after.customerGroup;
+      }
+
+      actions.push(action);
+    } else if (key === 'customerNumber') {
+      //
+      // This field can be set only once.
+      //
+      if (change.length === 1) {
+        actions.push({
+          action: 'setCustomerNumber',
+          customerNumber: change[0]
+        });
+      }
+    } else if (commonFields.has(key)) {
+      let actionName = 'set' + key.charAt(0).toUpperCase() + key.slice(1);
+      let prop = key;
+
+      if (
+          key === 'defaultShippingAddressId'
+        || key === 'defaultBillingAddressId'
+      ) {
+        actionName = actionName.slice(0, -2);
+        prop = 'addressId';
+      }
+
+      const action = { action: actionName };
+
+      if (change.length !== 3) action[prop] = after[key];
+
+      actions.push(action);
+    } else if (key === 'custom') {
+      const fields = after.custom && after.custom.fields;
+      let action = { action: 'setCustomType' };
+
+      //
+      // The custom type has been added or removed.
+      //
+      if (Array.isArray(change)) {
+        if (change.length === 1) {
+          action.typeId = after.custom.type.id;
+          if (fields) action.fields = fields;
+        }
+
+        return actions.push(action);
+      }
+
+      if (change.type) {
+        //
+        // The `type` field has changed. We have to set the new custom type.
+        //
+        action.typeId = after.custom.type.id;
+        if (fields) action.fields = fields;
+        actions.push(action);
+      } else {
+        Object.keys(change.fields).forEach((key) =>{
+          const delta = change.fields[key];
+
+          action = { action: 'setCustomField', name: key };
+
+          if (!Array.isArray(delta) || delta.length !== 3) {
+            action.value = after.custom.fields[key];
+          }
+
+          actions.push(action);
+        });
+      }
     }
   });
 
