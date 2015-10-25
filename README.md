@@ -8,8 +8,69 @@ actions as defined in [http://dev.sphere.io/http-api-projects-customers.html][cu
 
 ## Install
 
-```
+```bash
 npm install --save build-actions
+```
+
+## API
+
+This module exports a single function that takes two arguments:
+
+1. An object representing a customer.
+2. An object representing the updated version of the same customer.
+
+The function returns an array of [update actions][update-actions].
+
+```js
+var buildActions = require('build-actions');
+
+var before = {
+  email: 'foo.bar@domain.com',
+  firstName: 'foo',
+  lastName: 'bar',
+  addresses: []
+};
+
+var after = {
+  "customerNumber": "123456",
+  email: 'foobar@domain.com',
+  firstName: 'foo',
+  lastName: 'bar',
+  middleName: 'baz',
+  addresses: [{
+    "id": "FjAJrc2C",
+    "country": "NL"
+  }],
+  defaultShippingAddressId: "FjAJrc2C"
+};
+
+var actions = buildActions(before, after);
+
+console.log(actions);
+
+/*
+[{
+  action: 'changeEmail',
+  email: 'foobar@domain.com'
+}, {
+  action: 'addAddress',
+  address: {
+    id: 'FjAJrc2C',
+    country: 'NL'
+  }
+}, {
+  action: 'setCustomerNumber',
+  customerNumber: '123456'
+}, {
+  action: 'changeName',
+  firstName: 'foo',
+  lastName: 'bar',
+  middleName: 'baz'
+}, {
+  action: 'setDefaultShippingAddress',
+  addressId: 'FjAJrc2C'
+}]
+*/
 ```
 
 ## License
@@ -21,3 +82,4 @@ npm install --save build-actions
 [coverage-build-actions-badge]: https://img.shields.io/coveralls/lpinca/build-actions/master.svg
 [coverage-build-actions]: https://coveralls.io/r/lpinca/build-actions?branch=master
 [customer]: http://dev.sphere.io/http-api-projects-customers.html
+[update-actions]: http://dev.sphere.io/http-api-projects-customers.html#update-actions
