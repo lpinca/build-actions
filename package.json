@@ -4,11 +4,12 @@
   "description": "Calculate the differences between two customer objects and build the update actions",
   "main": "lib/",
   "scripts": {
-    "test-travis": "babel-node node_modules/.bin/isparta cover _mocha --report lcovonly",
+    "test-travis": "npm run lint && babel-node node_modules/.bin/isparta cover _mocha --report lcovonly",
     "coverage": "babel-node node_modules/.bin/isparta cover _mocha",
     "test": "babel-node node_modules/.bin/_mocha",
     "build": "mkdir -p lib && babel -d lib src",
-    "prepublish": "npm run build"
+    "prepublish": "npm run build",
+    "lint": "eslint src test"
   },
   "homepage": "https://github.com/lpinca/build-actions",
   "bugs": "https://github.com/lpinca/build-actions/issues",
@@ -27,9 +28,14 @@
   "devDependencies": {
     "babel": "^5.8.23",
     "chai": "^3.4.0",
+    "eslint": "^1.7.3",
     "isparta": "^3.1.0",
     "lodash.clonedeep": "^3.0.2",
     "mocha": "^2.3.3",
     "pre-commit": "^1.1.2"
-  }
+  },
+  "pre-commit": [
+    "lint",
+    "test"
+  ]
 }

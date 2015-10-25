@@ -1,0 +1,20 @@
+{
+  "extends": "eslint:recommended",
+  "ecmaFeatures": {
+    "modules": true
+  },
+  "env": {
+    "mocha": true,
+    "node": true,
+    "es6": true
+  },
+  "rules": {
+    "eqeqeq": 2,
+    "indent": [ 2, 2, { "SwitchCase": 1 } ],
+    "no-console": 0,
+    "no-empty": 0,
+    "no-use-before-define": [ 2, "nofunc" ],
+    "quotes": [ 2, "single", "avoid-escape" ],
+    "semi": [ 2, "always" ]
+  }
+}
