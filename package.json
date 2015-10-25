@@ -6,8 +6,8 @@
   "scripts": {
     "test-travis": "npm run lint && babel-node node_modules/.bin/isparta cover _mocha --report lcovonly",
     "coverage": "babel-node node_modules/.bin/isparta cover _mocha",
+    "build": "mkdir -p lib && rm -f lib/* && babel -d lib src",
     "test": "babel-node node_modules/.bin/_mocha",
-    "build": "mkdir -p lib && babel -d lib src",
     "prepublish": "npm run build",
     "lint": "eslint src test"
   },
