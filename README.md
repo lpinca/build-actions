@@ -3,6 +3,7 @@
 Calculate the differences between two customer objects and build the update
 actions as defined in [http://dev.sphere.io/http-api-projects-customers.html][customer].
 
+[![Version npm][npm-build-actions-badge]][npm-build-actions]
 [![Build Status][travis-build-actions-badge]][travis-build-actions]
 [![Coverage Status][coverage-build-actions-badge]][coverage-build-actions]
 
@@ -77,6 +78,8 @@ console.log(actions);
 
 [MIT](LICENSE)
 
+[npm-build-actions-badge]: https://img.shields.io/npm/v/build-actions.svg
+[npm-build-actions]: https://www.npmjs.com/package/build-actions
 [travis-build-actions-badge]: https://img.shields.io/travis/lpinca/build-actions/master.svg
 [travis-build-actions]: https://travis-ci.org/lpinca/build-actions
 [coverage-build-actions-badge]: https://img.shields.io/coveralls/lpinca/build-actions/master.svg
