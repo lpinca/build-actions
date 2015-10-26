@@ -33,16 +33,16 @@ var before = {
 };
 
 var after = {
-  "customerNumber": "123456",
+  customerNumber: '123456',
   email: 'foobar@domain.com',
   firstName: 'foo',
   lastName: 'bar',
   middleName: 'baz',
   addresses: [{
-    "id": "FjAJrc2C",
-    "country": "NL"
+    id: 'FjAJrc2C',
+    country: 'NL'
   }],
-  defaultShippingAddressId: "FjAJrc2C"
+  defaultShippingAddressId: 'FjAJrc2C'
 };
 
 var actions = buildActions(before, after);
