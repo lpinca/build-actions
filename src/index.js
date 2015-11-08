@@ -1,5 +1,6 @@
 'use strict';
 
+import 'babel/polyfill';
 import { nameFields, commonFields } from './fields';
 import jsondiffpatch from 'jsondiffpatch';
 
@@ -133,7 +134,7 @@ function buildActions(before, after) {
         if (fields) action.fields = fields;
         actions.push(action);
       } else {
-        Object.keys(change.fields).forEach((key) =>{
+        Object.keys(change.fields).forEach((key) => {
           const delta = change.fields[key];
 
           action = { action: 'setCustomField', name: key };
