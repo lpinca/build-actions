@@ -1,11 +1,11 @@
 # build-actions
 
-Calculate the differences between two customer objects and build the update
-actions as defined in [http://dev.sphere.io/http-api-projects-customers.html][customer].
-
 [![Version npm][npm-build-actions-badge]][npm-build-actions]
 [![Build Status][travis-build-actions-badge]][travis-build-actions]
 [![Coverage Status][coverage-build-actions-badge]][coverage-build-actions]
+
+Calculate the differences between two customer objects and build the update
+actions as defined in [http://dev.sphere.io/http-api-projects-customers.html][customer].
 
 ## Install
 
