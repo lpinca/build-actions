@@ -1,6 +1,6 @@
 {
   "name": "build-actions",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Calculate the differences between two customer objects and build the update actions",
   "main": "lib/",
   "scripts": {
